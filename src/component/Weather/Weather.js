@@ -2,22 +2,43 @@ import React from "react";
 import "./Weather.css";
 import { useState } from "react";
 import RadioButton from "../RadioButton/RadioButton";
+import DisplayWeather from "../DisplayWeather/DisplayWeather";
 
 function Weather() {
 
   const [zip, setZip] = useState('')
   const [unit, setUnit] = useState('metric')
-  const [data, setData] = useState({temp: 72})
+  const [data, setData] = useState(null)
 
+  async function fetchWeather() {
+    const apikey = '4d5c2f4d98d24a0dee6f9f21f1a69cd6'
+    const path = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${apikey}&units=${unit}`
+    const res = await fetch(path)
+    const json = await res.json()
+    console.log(json)
+    const temp = json.main.temp
+    const feelsLike = json.main.feels_like
+    const description = json.weather[0].description
+    const name = json.name
+
+    setData({
+      temp,
+      feelsLike,
+      description,
+      name
+    })
+  }
+
+  
   return (
     <div className="Weather">
       {/* both sides of the && have to be true, otherwise it's false
       truthy is almost all the values. */}
-      {data && <h1>{data.temp}</h1>}
+      {data && <DisplayWeather {... data} />}
       {/* as soon as you click submit, it reloads the pages, but we have to prevent that. */}
       <form onSubmit={(e) => {
         e.preventDefault()
-
+        fetchWeather()
       }}>
         <div>
           <div>
