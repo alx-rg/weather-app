@@ -16,16 +16,27 @@ function Weather() {
     const res = await fetch(path)
     const json = await res.json()
     console.log(json)
+    
+    const cod = json.cod
+    const message = json.message
+    if (cod !== 200) {
+      setData({cod, message})
+      return
+    }
+    
     const temp = json.main.temp
     const feelsLike = json.main.feels_like
     const description = json.weather[0].description
     const name = json.name
 
     setData({
+      cod,
+      message,
       temp,
       feelsLike,
       description,
-      name
+      name,
+      unit
     })
   }
 
@@ -34,7 +45,12 @@ function Weather() {
     <div className="Weather">
       {/* both sides of the && have to be true, otherwise it's false
       truthy is almost all the values. */}
-      {data && <DisplayWeather {... data} />}
+      {/* {data && <DisplayWeather {... data} />} */}
+      {/* {2+2 === 4? <p>2+2=4</p>: <p>2+3!=4</p> } */}
+      {/* {2+3 === 4? <p>2+2=4</p>: <p>2+3!=4</p> } */}
+      {/* {4 === 4? <p>2+2=4</p>: <p>2+3!=4</p> } */}
+      { data ? <DisplayWeather {... data} />: <p>Enter Zip Code Below</p>}
+
       {/* as soon as you click submit, it reloads the pages, but we have to prevent that. */}
       <form onSubmit={(e) => {
         e.preventDefault()

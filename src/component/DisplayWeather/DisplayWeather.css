@@ -1,0 +1,32 @@
+.DisplayWeather {
+text-align: right;
+margin-bottom: 1rem;
+}
+
+.DisplayWeather > h1 {
+  color: rgb(141, 217, 234);
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+}
+
+.DisplayWeather > h3 {
+  color: rgb(220, 220, 220);
+  font-style: italic;
+}
+
+.DisplayWeather > small, .DisplayWeather > p {
+  color: rgb(204, 204, 204);
+  font-variant: small-caps;
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: right;
+}
+
+.Error {
+  color: red;
+  margin: 1rem;
+
+}
