@@ -25,18 +25,50 @@ function Weather() {
             <button>Submit</button>
           </div>
           <div>
-            <select onChange={e => setUnit(e.target.value)}>
+            <select 
+            // when you change the unit elsewhere(radio) it changes it here too
+              value={unit}
+              onChange={e => setUnit(e.target.value)}
+            >
               <option value="metric">Celcius</option>
               <option value="imperial">Fahrenheit</option>
               <option value="standard">Kelvin</option>
             </select>
           </div>
           <div>
+
+            {/* associate the label with the radio button by calling it with the "id"  */}
             <input
               id="metric"
               type="radio"
+              name="unit"
+              checked={unit === 'metric'}
+              onChange={(e) => {setUnit('metric')}}
               />
+              {/* for is a reserved word in JS so we need to use htmlFor */}
               <label htmlFor="metric">metric</label>
+
+            <label>
+              <input
+                type="radio"
+                name="unit"
+                checked={unit === 'imperial'}
+                onChange={(e) => {setUnit('imperial')}}
+
+                />
+            imperial</label>
+      
+            <label>
+              <input
+                type="radio"
+                name="unit"
+                checked={unit === 'standard'}
+                onChange={(e) => {setUnit('standard')}}
+
+                />
+            standard</label>
+
+
           </div>
 
 
