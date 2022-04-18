@@ -13,10 +13,12 @@ function Weather() {
   async function fetchWeather() {
     const apikey = '4d5c2f4d98d24a0dee6f9f21f1a69cd6'
     const path = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${apikey}&units=${unit}`
+    // res is simply the response from the server, i.e. the server saying yes, got it, I'm responding
     const res = await fetch(path)
+    // you made the connection to the server, and return the data as json - then we wait for the data
     const json = await res.json()
     console.log(json)
-    
+    // can't do any of the code below until we get a json, and we can't do that until we get a response from the server
     const cod = json.cod
     const message = json.message
     if (cod !== 200) {
