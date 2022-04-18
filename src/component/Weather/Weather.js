@@ -9,11 +9,42 @@ function Weather() {
   const [zip, setZip] = useState('')
   const [unit, setUnit] = useState('metric')
   const [data, setData] = useState(null)
+  
+  // -----------------------
+  function fetchWeatherByGeo() {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximunAge: 0
+    }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude, longitude } = pos.coords
+      const apikey = '4d5c2f4d98d24a0dee6f9f21f1a69cd6'
+      const path = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apikey}&units=${unit}`
+      fetchWeather(path);
 
-  async function fetchWeather() {
+      //to make it work you need to type in 
+      // start HTTPS server:
+      // https=true npm start (unless you're using yarn, then type in yarn (instead of npm))
+
+    }, (err) => {
+      console.log(err.message)
+    }, options)
+    //fetchWeather(path);
+  }
+
+  function fetchWeatherByZip() {
     const apikey = '4d5c2f4d98d24a0dee6f9f21f1a69cd6'
     const path = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${apikey}&units=${unit}`
-    // res is simply the response from the server, i.e. the server saying yes, got it, I'm responding
+    fetchWeather(path);
+  }
+  
+ 
+  // -----------------------
+  async function fetchWeather(path) {
+    // const apikey = '4d5c2f4d98d24a0dee6f9f21f1a69cd6'
+    // const path = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${apikey}&units=${unit}`
+    // // res is simply the response from the server, i.e. the server saying yes, got it, I'm responding
     const res = await fetch(path)
     // you made the connection to the server, and return the data as json - then we wait for the data
     const json = await res.json()
@@ -56,7 +87,7 @@ function Weather() {
       {/* as soon as you click submit, it reloads the pages, but we have to prevent that. */}
       <form onSubmit={(e) => {
         e.preventDefault()
-        fetchWeather()
+        fetchWeatherByZip()
       }}>
         <div>
           <div>
@@ -107,6 +138,9 @@ function Weather() {
           </div>
         </div>
       </form>
+      <button
+        onClick={() => fetchWeatherByGeo()}
+      >Get Weather By Location</button>
     </div>
   )
 }
